@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vlog/home.dart';
 
 // ignore: camel_case_types
 class detailPage extends StatefulWidget {
@@ -22,28 +23,43 @@ class _detailPageState extends State<detailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Image.network(widget.image),
-            ],
-          ),
-          const Divider(
-            color: Colors.black45,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.titre,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Image.network(widget.image),
+              ],
             ),
-          ),
-          Text(widget.desc),
-          Row(
-            children: [const Icon(Icons.calendar_today), Text(widget.date)],
-          )
-        ],
+            const Divider(
+              color: Colors.black45,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                widget.titre,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(widget.desc),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [const Icon(Icons.calendar_today), Text(widget.date)],
+              ),
+            ),
+        
+            SizedBox(
+              
+              height: MediaQuery.of(context).size.height, 
+              width: 
+              MediaQuery.of(context).size.width,
+              child: NewWidget()),
+          ],
+        ),
       ),
     );
   }
