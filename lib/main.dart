@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vlog/detail.dart';
 import 'package:vlog/loading.dart';
 
 void main() {
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: false,
       ),
-      home: const LoadingPage(),
+      home:  detailPage(),
     );
   }
 }
