@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vlog/scrollStory.dart';
 import 'package:vlog/story_ui.dart';
 import 'package:vlog/ui.dart';
 
@@ -17,7 +18,13 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton.extended(
         // ignore: prefer_const_constructors
         label: Text('Story'),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => scrollStory(),
+              ));
+        },
       ),
       appBar: AppBar(
         centerTitle: true,
@@ -40,8 +47,9 @@ class NewWidget extends StatelessWidget {
     return const Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(right: 310),
+          padding: EdgeInsets.only(right: 280),
           child: Text("A la une",
+              textAlign: TextAlign.start,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         ),
         Padding(

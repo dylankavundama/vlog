@@ -57,7 +57,7 @@ class _detailPageState extends State<detailPage> {
               height: MediaQuery.of(context).size.height, 
               width: 
               MediaQuery.of(context).size.width,
-              child: NewWidget()),
+              child: SingleChildScrollView(child: NewWidget())),
           ],
         ),
       ),

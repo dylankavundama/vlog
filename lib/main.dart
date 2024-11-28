@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vlog/loading.dart';
-import 'package:vlog/scrollStory.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: false,
       ),
-      home: scrollStory(),
+      home: const LoadingPage(),
     );
   }
 }
