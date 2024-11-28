@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vlog/story_ui.dart';
 import 'package:vlog/ui.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,6 +13,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        // ignore: prefer_const_constructors
+        label: Text('Story'),
+        onPressed: () {},
+      ),
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Vlog"),
@@ -30,10 +37,33 @@ class NewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-
-        Text("A la une"),
+        Padding(
+          padding: EdgeInsets.only(right: 310),
+          child: Text("A la une",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                ui_story(),
+                ui_story(),
+                ui_story(),
+                ui_story(),
+                ui_story(),
+                ui_story(),
+                ui_story(),
+                ui_story(),
+                ui_story(),
+                ui_story(),
+              ],
+            ),
+          ),
+        ),
         UI_News(
           titre:
               'Meta lance une version simplifiée d’Instagram pour les régions à faible connectivité',
@@ -60,8 +90,7 @@ class NewWidget extends StatelessWidget {
               'https://classe-export.com/wp-content/uploads/2023/05/90-e1684918394278.jpeg',
         ),
         UI_News(
-          titre:
-              'SpaceX réussit un nouvel atterrissage de sa fusée Starship',
+          titre: 'SpaceX réussit un nouvel atterrissage de sa fusée Starship',
           desc:
               'SpaceX a effectué avec succès le test de lancement et d’atterrissage de son vaisseau Starship, marquant une étape clé dans le développement de sa fusée réutilisable pour les missions lunaires et martiennes.',
           date: 'le 30/09/2024',
