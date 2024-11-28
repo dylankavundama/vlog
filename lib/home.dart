@@ -32,6 +32,8 @@ class NewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+
+        Text("A la une"),
         UI_News(
           titre:
               'Meta lance une version simplifiée d’Instagram pour les régions à faible connectivité',
