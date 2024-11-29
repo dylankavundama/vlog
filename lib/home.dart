@@ -80,7 +80,14 @@ class _HomePageState extends State<HomePage> {
       // )
       //
 
-      body: SingleChildScrollView(
+      body:
+      _isLoading
+          ? Center(
+              child:
+               CircularProgressIndicator())
+              
+          :
+       SingleChildScrollView(
         child: Column(
           children: List.generate(
               post.length,
