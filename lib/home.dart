@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:vlog/detail.dart';
 import 'package:vlog/scrollStory.dart';
 import 'package:vlog/story_ui.dart';
 import 'package:vlog/ui.dart';
+import 'package:http/http.dart' as http;
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +16,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<dynamic> post = [];
+  bool _isLoading = false;
+
+  recupData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    const url = 'https://couleur-afrique.org/vma/video.php';
+    final uri = Uri.parse(url);
+    final reponse = await http.get(uri);
+    final List resultat = jsonDecode(reponse.body);
+    post = resultat;
+    resultat.sort(
+      (a, c) => c["id"].compareTo(a["id"]),
+    );
+    debugPrint(resultat.toString());
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    recupData();
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +56,7 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => scrollStory(),
+                builder: (context) => const scrollStory(),
               ));
         },
       ),
@@ -30,8 +64,62 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: const Text("Vlog"),
       ),
-      body: const SingleChildScrollView(
-        child: NewWidget(),
+      // body:   List.generate(
+      //   post.length., (index) => GestureDetector(
+
+      //     child: UI_News(
+      //       image: post[index]['image'] ,
+      //          titre: post[index]['titre'] ,
+      //          desc: '',
+
+      //          date: '',
+
+      //     ),
+      //   )
+
+      // )
+      //
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: List.generate(
+              post.length,
+              (index) => GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => YoutubePlayer(
+                              // controller: _controller,
+                              controller: YoutubePlayerController(
+                                flags: YoutubePlayerFlags(forceHD: true,hideThumbnail: true,),
+                                  initialVideoId: post[index]['video']),
+                              showVideoProgressIndicator: true,
+                              progressIndicatorColor: Colors.amber,
+                              progressColors: const ProgressBarColors(
+                                playedColor: Colors.amber,
+                                handleColor: Colors.amberAccent,
+                              ),
+                              // onReady: () {
+                              //   _controller.addListener(listener);
+                              // },
+                            ),
+                            // detailPage(
+                            //   date: '',
+                            //   desc: '',
+                            //   image: post[index]['image'],
+                            //   titre: post[index]['titre'],
+                            // ),
+                          ));
+                    },
+                    child: UI_News(
+                      titre: post[index]['titre'],
+                      date: '',
+                      desc: '',
+                      image: post[index]['image'],
+                    ),
+                  )),
+        ),
       ),
     );
   }
