@@ -1,90 +1,76 @@
-https://couleur-afrique.org/mark/all.php
-
-import 'package:first/add.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'motivePage.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Supabase.initialize(
-    url: 'https://vedjwvecqlobnryactos.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlZGp3dmVjcWxvYm5yeWFjdG9zIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTUyODI2OTUsImV4cCI6MjAxMDg1ODY5NX0.77wPATiKNzIXRdP8U3xsc7l5kYn-qs60Y0QZE7IHTkY',
-  );
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class motivePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
-        ),
-        home: const addData());
-  }
+  State<motivePage> createState() => _motivePageState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({
-    super.key,
-  });
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _motivePageState extends State<motivePage> {
   @override
   final _note =
       Supabase.instance.client.from('Test').stream(primaryKey: ['id']);
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: Column(
-          children: [
-            IconButton(
-              icon: Icon(Icons.send),
-              onPressed: () {
-                {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return SimpleDialog(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: double.minPositive),
-                          children: [
-                            TextFormField(
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    () {
-                                      (value) async {
-                                        await Supabase.instance.client
-                                            .from('Test')
-                                            .insert({'text': value});
-                                      };
-                                    };
-                                  },
-                                  icon: Icon(Icons.send),
-                                ),
-                                hintText: 'Add a comment...',
-                              ),
-                            )
-                          ],
-                        );
-                      });
-                }
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+          stream: _note,
+          builder: (context, snashot) {
+            if (!snashot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(color: Colors.black),
+              );
+            }
+
+            final notes = snashot.data!;
+
+            return ListView.builder(
+              itemCount: notes.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: ListTile(
+                    leading: Icon(Icons.ac_unit),
+                    title: Text(notes[index]['text']),
+                  ),
+                );
+                Container(
+                    margin:
+                        EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 10),
+                    padding: EdgeInsets.all(15),
+                    height: 100,
+                    foregroundDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                    child: Text(notes[index]['text']));
               },
-            )
-          ],
-        ));
+            );
+          }),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SimpleDialog(
+                      title: Text('Ajouter'),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: double.minPositive),
+                      children: [
+                        TextFormField(onFieldSubmitted: (value) async {
+                          await Supabase.instance.client
+                              .from('Test')
+                              .insert({'text': value});
+                        })
+                      ],
+                    );
+                  });
+            }
+          },
+          child: Icon(Icons.add)),
+    );
   }
 }
